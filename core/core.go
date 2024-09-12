@@ -1,10 +1,11 @@
 package core
 
 import (
+	"github.com/JackalLabs/gulf/jackal/uploader"
 	cosmoWallet "github.com/desmos-labs/cosmos-go-wallet/wallet"
 	"github.com/ipfs/boxo/ipld/merkledag"
 	"github.com/ipfs/go-cid"
-	"ipfsUploader/jackal/uploader"
+	ffmpeg_go "github.com/u2takey/ffmpeg-go"
 	"os"
 	"path"
 	"strings"
@@ -17,6 +18,28 @@ import (
 	ipldFormat "github.com/ipfs/go-ipld-format"
 	"github.com/rs/zerolog/log"
 )
+
+func Convert(p string, outDir string) error {
+	_ = os.MkdirAll(outDir, os.ModePerm)
+	np := path.Join(outDir, "output.m3u8")
+	err := ffmpeg_go.Input(p).
+		Output(np,
+			ffmpeg_go.KwArgs{
+				"codec":         "copy",
+				"start_number":  "0",
+				"hls_time":      "10",
+				"hls_list_size": "0",
+				"f":             "hls",
+					}).
+		OverWriteOutput(). // Optional: Overwrite existing files
+		Run()
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
 
 func PostDir(dirPath string, q *uploader.Queue, w *cosmoWallet.Wallet) (string, []byte, error) {
 	directory, err := os.ReadDir(dirPath)

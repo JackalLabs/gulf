@@ -1,13 +1,13 @@
 package main
 
 import (
+	"github.com/JackalLabs/gulf/cmd"
+	"github.com/JackalLabs/gulf/jackal/uploader"
+	"github.com/JackalLabs/gulf/jackal/wallet"
 	"github.com/desmos-labs/cosmos-go-wallet/types"
 	"github.com/joho/godotenv"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"ipfsUploader/cmd"
-	"ipfsUploader/jackal/uploader"
-	"ipfsUploader/jackal/wallet"
 	"os"
 )
 
